@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'application'
     id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
@@ -35,4 +36,16 @@ shadowJar {
 
 compileJava {
     options.compilerArgs += ["--enable-preview"]
+}
+
+def mClass = 'fr.asynconf.bot'
+
+run {
+    mainClassName = mClass
+}
+
+build {
+    manifest {
+        attributes('Main-Class': mClass)
+    }
 }
