@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
+}
+
+group 'fr.asynconf'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://jitpack.io'
+    }
+    maven {
+        url 'https://m2.dv8tion.net/releases'
+    }
+}
+
+dependencies {
+    implementation 'me.carleslc.Simple-YAML:Simple-Yaml:1.7.2'
+    implementation 'org.reflections:reflections:0.10.1'
+    implementation 'net.dv8tion:JDA:4.3.0_277'
+    implementation 'org.xerial:sqlite-jdbc:3.36.0.2'
+    implementation 'ch.qos.logback:logback-classic:1.2.6'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+shadowJar {
+    project.configurations.implementation.canBeResolved(true)
+    configurations = [project.configurations.implementation]
+}
+
+compileJava {
+    options.compilerArgs += ["--enable-preview"]
+}
