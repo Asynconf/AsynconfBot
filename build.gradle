@@ -38,7 +38,7 @@ compileJava {
     options.compilerArgs += ["--enable-preview"]
 }
 
-def mClass = 'fr.asynconf.bot'
+def mClass = 'fr.asynconf.bot.Main'
 
 run {
     mainClassName = mClass
