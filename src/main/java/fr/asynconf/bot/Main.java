@@ -87,6 +87,7 @@ public class Main {
             this.config.set("bot.guild.log_channel.id", 0);
             this.config.set("bot.guild.submissions.deposit_id", 0);
             this.config.set("bot.guild.submissions.review_id", 0);
+            this.config.set("bot.guild.submissions.state", "closed");
             
             this.config.save(f);
             return;
