@@ -25,6 +25,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
@@ -175,6 +176,10 @@ public class Main {
                                     .addOption(OptionType.INTEGER, "id", "Identifiant du projet à valider", true)
                     )
                     .addSubcommands(
+                            new SubcommandData("take", "Prend en charge un projet à partir de l'identifiant du projet")
+                                    .addOption(OptionType.INTEGER, "id", "Identifiant du projet à valider", true)
+                    )
+                    .addSubcommands(
                             new SubcommandData("deny", "Refuser le projet de quelqu'un à partir de l'identifiant du projet")
                                     .addOption(OptionType.INTEGER, "id", "Identifiant du projet à refuser", true)
                                     .addOptions(
@@ -186,6 +191,13 @@ public class Main {
                                                     .addChoice("Trop de soumissions (si défaillance système automatique)", "Trop de soumissions")
                                     )
                     )
+                    .queue();
+        }
+        
+        if(!commands.contains("status")) {
+            asynconfGuild
+                    .upsertCommand("status", "ADMIN | Définis le status du bot")
+                    .addOption(OptionType.STRING, "status", "Nouveau status du bot")
                     .queue();
         }
     }

@@ -20,10 +20,7 @@
 package fr.asynconf.bot.events;
 
 import fr.asynconf.bot.Main;
-import fr.asynconf.bot.commands.BanCommandEx;
-import fr.asynconf.bot.commands.ProjectCommandEx;
-import fr.asynconf.bot.commands.SubmitCommandEx;
-import fr.asynconf.bot.commands.TournoiCommandEx;
+import fr.asynconf.bot.commands.*;
 import fr.asynconf.bot.commands.utils.Command;
 import fr.asynconf.bot.commands.utils.CommandManager;
 import net.dv8tion.jda.api.Permission;
@@ -52,7 +49,8 @@ public class MessageListener extends ListenerAdapter {
                 new Command("tournoi", new TournoiCommandEx(main)),
                 new Command("ban", new BanCommandEx(main)),
                 new Command("submit", new SubmitCommandEx(main)),
-                new Command("project", new ProjectCommandEx(main))
+                new Command("project", new ProjectCommandEx(main)),
+                new Command("status", new StatusCommandEx(main))
         );
     }
     

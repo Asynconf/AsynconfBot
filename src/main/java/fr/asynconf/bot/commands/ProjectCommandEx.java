@@ -25,7 +25,6 @@ import fr.asynconf.bot.utils.ErrorEmbed;
 import fr.asynconf.bot.utils.LogEmbed;
 import fr.asynconf.bot.utils.ProjectEmbed;
 import fr.asynconf.bot.utils.SuccessEmbed;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
@@ -36,7 +35,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ProjectCommandEx implements CommandExecutor {
     
@@ -100,6 +98,16 @@ public class ProjectCommandEx implements CommandExecutor {
             return;
         }
         
+        if (rs.getString("state").equalsIgnoreCase("taken")
+        && "take".equalsIgnoreCase(event.getSubcommandName())) {
+            event.replyEmbeds(new ErrorEmbed()
+                            .setDescription("Ce projet a déjà été pris en charge !")
+                            .build())
+                    .setEphemeral(true)
+                    .queue();
+            return;
+        }
+        
         if (rs.getString("state").equalsIgnoreCase("success")) {
             event.replyEmbeds(new ErrorEmbed()
                             .setDescription("Ce projet a déjà été accepté !")
@@ -143,7 +151,12 @@ public class ProjectCommandEx implements CommandExecutor {
                 .prepareStatement("""
                         UPDATE submissions SET state=? WHERE id=?
                         """);
-        ps2.setString(1, Objects.equals(event.getSubcommandName(), "accept") ? "success" : "failure");
+        ps2.setString(1, switch (event.getSubcommandName()) {
+            case "accept" -> "success";
+            case "deny" -> "failure";
+            case "take" -> "taken";
+            default -> "failure";
+        });
         ps2.setLong(2, id);
         
         ps2.execute();
@@ -154,13 +167,22 @@ public class ProjectCommandEx implements CommandExecutor {
                                     event.getUser(),
                                     rs.getString("repl_link"),
                                     Math.toIntExact(id),
-                                    Objects.equals(event.getSubcommandName(), "accept") ? "success" : "failure")
+                                    switch (event.getSubcommandName()) {
+                                        case "accept" -> "success";
+                                        case "deny" -> "failure";
+                                        case "take" -> "taken";
+                                        default -> "failure";
+                                    })
+                                    .addField("Modérateur :", event.getUser().getAsMention(), false)
                                     .build())
                     .queue();
         }
         
         
         switch (event.getSubcommandName()) {
+            case "take" -> embeds.add(new SuccessEmbed()
+                    .setDescription("Le projet avec l'identifiant `" + id + "` a bien été marqué comme pris en compte par vous")
+                    .build());
             case "accept" -> {
                 user.openPrivateChannel().complete().sendMessage(new SuccessEmbed()
                                 .setTitle("Projet accepté !")

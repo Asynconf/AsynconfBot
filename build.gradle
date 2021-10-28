@@ -42,6 +42,7 @@ def mClass = 'fr.asynconf.bot.Main'
 
 run {
     mainClassName = mClass
+    jvmArgs += "--enable-preview"
 }
 
 build {

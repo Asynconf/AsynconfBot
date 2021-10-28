@@ -33,6 +33,7 @@ public class ProjectEmbed extends LogEmbed {
     private String retrieveState(String insertedState) {
         return switch (insertedState) {
             case "pending" -> "<:pending:902614613772861481> En attente...";
+            case "taken" -> "<:question:903316900627484683> Pris en charge...";
             case "success" -> "<:yes:902614739090305054> Accepté !";
             case "failure" -> "<:no:902614635889455124> Refusé !";
             default -> "??? " + insertedState;
@@ -44,6 +45,7 @@ public class ProjectEmbed extends LogEmbed {
             case "pending" -> setColor(0x9c88ff);
             case "success" -> setColor(0x2ed573);
             case "failure" -> setColor(0xeb3b5a);
+            case "taken" -> setColor(0xfeca57);
         }
     }
 }
