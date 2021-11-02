@@ -164,7 +164,7 @@ public class ProjectCommandEx implements CommandExecutor {
         if (msg != null) {
             msg.editMessage(
                             new ProjectEmbed(
-                                    event.getUser(),
+                                    user,
                                     rs.getString("repl_link"),
                                     Math.toIntExact(id),
                                     switch (event.getSubcommandName()) {
